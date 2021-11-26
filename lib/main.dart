@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:banking_app/bloc/customer_provider.dart';
+import 'package:banking_app/providers/customer_provider.dart';
 import 'package:banking_app/model/customer.dart';
 import 'package:banking_app/push%20notification/push_notification.dart';
 import 'package:banking_app/routes/routes.dart';

@@ -1,4 +1,4 @@
-import 'package:banking_app/bloc/customer_provider.dart';
+import 'package:banking_app/providers/customer_provider.dart';
 import 'package:banking_app/model/customer.dart';
 import 'package:banking_app/utils/constants.dart';
 import 'package:banking_app/utils/validator.dart';

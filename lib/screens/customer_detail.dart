@@ -1,4 +1,4 @@
-import 'package:banking_app/bloc/customer_provider.dart';
+import 'package:banking_app/providers/customer_provider.dart';
 import 'package:banking_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import '../model/customer.dart';
