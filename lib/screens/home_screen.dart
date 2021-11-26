@@ -32,6 +32,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  //Builds custom button
   Widget buttonWidget(
       String title, Function targetFunction, BuildContext context) {
     return Container(
@@ -42,7 +43,6 @@ class HomeScreen extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           targetFunction(context);
-          print(title);
         },
         child: Text(
           title,

@@ -14,17 +14,17 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-int count = 0;
 // This is firebase handler for background messages
 Future<void> _messageHandler(RemoteMessage message) async {
-  count++;
-  print('$count background message ${message.notification!.body}');
+  print('background message ${message.notification!.body}');
 }
 
 void main() async {
+  //Initializing the Firebase Messaging to capture notifications
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
+  //Initializing the Directory and Hive Database
   Directory directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(CustomerAdapter());
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       child: OverlaySupport(
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Banking App',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
@@ -79,37 +79,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-
-      // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      //   print(
-      //       'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
-      // });
     } else {
       print('User declined or has not accepted permission');
     }
   }
 
-  checkForInitialMessage() async {
-    await Firebase.initializeApp();
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-
-    if (initialMessage != null) {
-      print(initialMessage);
-    }
-  }
-
-  Future<void> _initializeFlutterFire() async {
-    // Wait for Firebase to initialize
-    await Firebase.initializeApp();
-  }
-
   @override
   void initState() {
     pushNotification(context);
-    checkForInitialMessage();
-    // registerNotification();
-    // _initializeFlutterFire();
+    //request for the permissions needed to show the notification
+    registerNotification();
     super.initState();
   }
 
@@ -117,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-
+    //Calling HomeScreen
     return const HomeScreen();
   }
 }

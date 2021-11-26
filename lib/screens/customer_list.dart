@@ -11,7 +11,7 @@ class CustomerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<CustomerProvider>(context).getItem;
+    //This function watches for any data change in the getItem() function
     context.watch<CustomerProvider>().getItem();
 
     return Consumer<CustomerProvider>(
@@ -37,6 +37,7 @@ class CustomerList extends StatelessWidget {
     );
   }
 
+  //This widget builds Customer Item
   Widget customerItem(
     Customer customer,
     BuildContext ctx,

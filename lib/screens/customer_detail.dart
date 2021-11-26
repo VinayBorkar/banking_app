@@ -3,6 +3,7 @@ import 'package:banking_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import '../model/customer.dart';
 import 'package:provider/provider.dart';
+import '../utils/constants.dart';
 
 enum BankingAction {
   withdraw,
@@ -28,6 +29,10 @@ class _CustomerDetailState extends State<CustomerDetail> {
   void initState() {
     balance = widget.customer.balance;
     super.initState();
+  }
+
+  void showInSnackBar(String value) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value)));
   }
 
   @override
@@ -56,6 +61,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
             children: [
               TextButton(
                 onPressed: () {
+                  balanceController.clear();
                   inputBalanceDialog(context, BankingAction.withdraw);
                 },
                 child: const Text(
@@ -64,6 +70,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
               ),
               TextButton(
                 onPressed: () {
+                  balanceController.clear();
                   inputBalanceDialog(context, BankingAction.deposit);
                 },
                 child: const Text(
@@ -123,13 +130,13 @@ class _CustomerDetailState extends State<CustomerDetail> {
                           fontSize: 20,
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: (10 / 753) * screenHeight,
                       ),
                       TextFormField(
                         controller: balanceController,
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (value.toString().isEmpty) {
                             return 'Item name cannot be empty';
                           }
                           return null;
@@ -138,20 +145,20 @@ class _CustomerDetailState extends State<CustomerDetail> {
                           labelText: 'Amount',
                         ),
                       ),
-                      const SizedBox(
-                        height: 40,
+                      SizedBox(
+                        height: (40 / 753) * screenHeight,
                       ),
                       TextButton(
                         onPressed: () async {
                           if (action == BankingAction.withdraw) {
                             if (double.parse(balanceController.text) >=
                                 balance) {
-                              print('Low Balance');
+                              showInSnackBar('Low Balance');
                               return;
                             } else if (balance -
                                     (double.parse(balanceController.text)) <
                                 100) {
-                              print('Minimum balance should be 100');
+                              showInSnackBar('Minimum balance should be 100');
                               return;
                             }
                             setState(() {
@@ -162,6 +169,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
                               Customer(widget.customer.name,
                                   widget.customer.phno, balance),
                             );
+                            showInSnackBar('Withdraw successful');
                           } else {
                             setState(() {
                               balance += double.parse(balanceController.text);
@@ -171,8 +179,9 @@ class _CustomerDetailState extends State<CustomerDetail> {
                               Customer(widget.customer.name,
                                   widget.customer.phno, balance),
                             );
+                            showInSnackBar('Deposit successful');
                           }
-                          balanceController.text = '';
+                          balanceController.clear();
                           Navigator.pop(context);
                         },
                         child: Text(
@@ -185,8 +194,21 @@ class _CustomerDetailState extends State<CustomerDetail> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: (10 / 753) * screenHeight,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          balanceController.clear();
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                        ),
                       )
                     ],
                   ),
